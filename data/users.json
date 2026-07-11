@@ -1,0 +1,92 @@
+[
+  {
+    "username": "jsmith",
+    "full_name": "John Smith",
+    "email": "jsmith@company.com",
+    "status": "locked",
+    "password_expires": "2026-09-01",
+    "department": "Finance",
+    "last_login": "2026-07-10T09:23:00"
+  },
+  {
+    "username": "agarcia",
+    "full_name": "Ana Garcia",
+    "email": "agarcia@company.com",
+    "status": "active",
+    "password_expires": "2026-08-15",
+    "department": "Marketing",
+    "last_login": "2026-07-12T08:05:00"
+  },
+  {
+    "username": "bwong",
+    "full_name": "Brian Wong",
+    "email": "bwong@company.com",
+    "status": "expired",
+    "password_expires": "2026-06-30",
+    "department": "Engineering",
+    "last_login": "2026-06-29T17:42:00"
+  },
+  {
+    "username": "ktaylor",
+    "full_name": "Kim Taylor",
+    "email": "ktaylor@company.com",
+    "status": "inactive",
+    "password_expires": "2026-12-01",
+    "department": "Human Resources",
+    "last_login": "2026-03-02T11:10:00"
+  },
+  {
+    "username": "mchen",
+    "full_name": "Michael Chen",
+    "email": "mchen@company.com",
+    "status": "active",
+    "password_expires": "2026-10-20",
+    "department": "Engineering",
+    "last_login": "2026-07-11T19:55:00"
+  },
+  {
+    "username": "rpatel",
+    "full_name": "Riya Patel",
+    "email": "rpatel@company.com",
+    "status": "locked",
+    "password_expires": "2026-07-25",
+    "department": "Sales",
+    "last_login": "2026-07-09T14:12:00"
+  },
+  {
+    "username": "dnguyen",
+    "full_name": "Dan Nguyen",
+    "email": "dnguyen@company.com",
+    "status": "active",
+    "password_expires": "2026-11-05",
+    "department": "IT",
+    "last_login": "2026-07-12T07:30:00"
+  },
+  {
+    "username": "sokafor",
+    "full_name": "Sarah Okafor",
+    "email": "sokafor@company.com",
+    "status": "expired",
+    "password_expires": "2026-07-01",
+    "department": "Legal",
+    "last_login": "2026-06-28T10:00:00"
+  },
+  {
+    "username": "tmuller",
+    "full_name": "Tom Muller",
+    "email": "tmuller@company.com",
+    "status": "active",
+    "password_expires": "2026-09-30",
+    "department": "Finance",
+    "last_login": "2026-07-11T13:20:00"
+  },
+  {
+    "username": "ekowalski",
+    "full_name": "Eva Kowalski",
+    "email": "ekowalski@company.com",
+    "status": "inactive",
+    "password_expires": "2026-05-15",
+    "department": "Operations",
+    "last_login": "2026-01-15T09:00:00"
+  }
+]
