@@ -1,6 +1,3 @@
 rich
 psutil
 python-dotenv
-elevenlabs
-sounddevice
-pyaudio

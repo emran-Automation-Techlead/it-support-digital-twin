@@ -5,7 +5,7 @@ A terminal-based, offline-first IT support agent with two interfaces:
 - **Text Mode** — type an issue in plain English, routed by keyword-based
   intent detection to the right action.
 - **Voice Mode** — talk to "Alex," an ElevenLabs Conversational AI agent,
-  directly from the terminal.
+  via the ElevenLabs web widget opened in your browser.
 
 Password resets, account unlocks, VPN/connectivity checks, disk cleanup,
 ticket creation, and guided troubleshooting all run locally against mock
@@ -20,12 +20,13 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Then open `.env` and add your own ElevenLabs credentials:
+Then open `.env` and add your ElevenLabs agent ID:
 
 ```
-ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
 ELEVENLABS_AGENT_ID=your_elevenlabs_agent_id_here
 ```
+
+`ELEVENLABS_API_KEY` is optional — the web widget only needs the agent ID.
 
 Run it:
 
@@ -33,8 +34,8 @@ Run it:
 python main.py
 ```
 
-Requires Python 3.10+. Voice Mode additionally requires a working
-microphone and speakers.
+Requires Python 3.10+. Voice Mode opens a local HTML file in your default
+browser; the widget itself handles microphone/speaker access.
 
 ## Startup menu
 
@@ -48,9 +49,9 @@ microphone and speakers.
 [2] Voice Mode (Alex - ElevenLabs)
 ```
 
-If `.env` is missing or incomplete, Voice Mode prints a warning and exits
-back cleanly instead of crashing — it never fails silently or partially
-connects.
+If `ELEVENLABS_AGENT_ID` is missing from `.env`, Voice Mode prints a warning
+and exits back cleanly instead of crashing — it never fails silently or
+partially connects.
 
 ## Features
 
@@ -66,8 +67,8 @@ connects.
   `IT-YYYYMMDD-XXXX` ticket ID, saved to `data/tickets.json`
 - **Guided troubleshooting** — step-by-step flows for: can't connect to
   internet, Outlook not opening, slow computer, can't access shared drive
-- **Voice Mode** — full-duplex conversation with an ElevenLabs Conversational
-  AI agent via the official Python SDK
+- **Voice Mode** — opens the ElevenLabs Conversational AI web widget in your
+  default browser for a full-duplex voice conversation with "Alex"
 
 ## Project structure
 
@@ -78,8 +79,9 @@ ui.py                     rich UI helpers (panels, tables, spinners, colors)
 logger.py                 logging setup -> logs/it_support.log
 data_store.py             JSON read/write for users & tickets
 voice/
-  elevenlabs_agent.py      loads .env, starts an ElevenLabs voice session
-  audio_utils.py           audio device detection helpers
+  elevenlabs_agent.py      loads .env, renders widget.html, opens it in the browser
+  widget.html               ElevenLabs web widget template (placeholder agent-id)
+  widget_rendered.html      generated at runtime with your real agent-id (gitignored)
 actions/
   password.py
   account.py               status check + unlock
@@ -99,6 +101,9 @@ logs/                       action log (gitignored)
 
 - **Never commit `.env`.** It's excluded via `.gitignore` from the very
   first commit. Only `.env.example` (empty placeholders) is tracked.
+- **No API key required for Voice Mode.** The web widget authenticates
+  with just the public agent ID, so there's no server-side secret to
+  protect for this feature.
 - All destructive actions (unlock account, reset password, delete temp
   files) require an explicit `y/N` confirmation before executing.
 - Every state-changing action is logged to `logs/it_support.log`
