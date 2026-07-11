@@ -1,9 +1,17 @@
+import sys
 import time
 
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 from rich.status import Status
+
+# On Windows, redirected/piped stdout defaults to cp1252, which can't
+# encode box-drawing characters or emoji used in the UI. Force UTF-8 so
+# output doesn't crash outside a live terminal.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
 
 console = Console()
 

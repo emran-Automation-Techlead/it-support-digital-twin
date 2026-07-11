@@ -1,2 +1,5 @@
-rich>=13.7
-psutil>=5.9
+rich
+psutil
+python-dotenv
+elevenlabs
+sounddevice

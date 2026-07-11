@@ -1,11 +1,32 @@
 from agent import Agent
 import ui
+from voice.elevenlabs_agent import credentials_missing, start_voice_session
 
 EXIT_WORDS = {"exit", "quit", "bye", "q"}
 
+BANNER = """╔══════════════════════════════════╗
+║   IT Support Digital Twin        ║
+║   Powered by ElevenLabs          ║
+╚══════════════════════════════════╝"""
 
-def main():
-    ui.print_header()
+
+def print_banner():
+    ui.console.print(BANNER, style="bold cyan")
+    ui.console.print()
+    ui.console.print("[1] Text Mode")
+    ui.console.print("[2] Voice Mode (Alex - ElevenLabs)")
+    ui.console.print()
+
+
+def select_mode() -> str:
+    while True:
+        choice = ui.prompt("Select mode [1/2]: ").strip()
+        if choice in ("1", "2"):
+            return choice
+        ui.print_warning("Please enter 1 or 2.")
+
+
+def run_text_mode():
     ui.print_info(
         "Type your IT issue in plain English (e.g. 'check my vpn', 'reset my "
         "password', 'my computer is slow'). Type 'exit' to quit.\n"
@@ -33,6 +54,23 @@ def main():
             ui.print_error(f"Something went wrong handling that request: {e}")
 
         ui.console.print()
+
+
+def run_voice_mode():
+    if credentials_missing():
+        ui.print_warning("⚠️  Missing credentials. Copy .env.example to .env and add your keys.")
+        return
+    start_voice_session()
+
+
+def main():
+    print_banner()
+    choice = select_mode()
+
+    if choice == "2":
+        run_voice_mode()
+    else:
+        run_text_mode()
 
 
 if __name__ == "__main__":

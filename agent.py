@@ -2,7 +2,7 @@ import re
 from enum import Enum
 
 import ui
-from actions import account_status, disk, password, ticket, troubleshoot, unlock, vpn
+from actions import account, disk, password, tickets, troubleshoot, vpn
 
 
 class Intent(Enum):
@@ -82,11 +82,11 @@ class Agent:
 
         if intent == Intent.ACCOUNT_UNLOCK:
             username = ui.prompt("Username to unlock: ").strip()
-            return unlock.unlock_account(username)
+            return account.unlock_account(username)
 
         if intent == Intent.ACCOUNT_STATUS:
             username = _extract_username(text) or ui.prompt("Username to check: ").strip()
-            return account_status.check_status(username)
+            return account.check_status(username)
 
         if intent == Intent.VPN_CHECK:
             return vpn.check_vpn()
@@ -96,11 +96,11 @@ class Agent:
 
         if intent == Intent.CREATE_TICKET:
             reported_by = ui.prompt("Your username: ").strip()
-            return ticket.create_ticket(reported_by)
+            return tickets.create_ticket(reported_by)
 
         if intent == Intent.TROUBLESHOOT:
             return troubleshoot.troubleshoot(topic)
 
         ui.print_warning("I didn't understand that - let's file a support ticket instead.")
         reported_by = ui.prompt("Your username: ").strip()
-        return ticket.create_ticket(reported_by, description=text)
+        return tickets.create_ticket(reported_by, description=text)
