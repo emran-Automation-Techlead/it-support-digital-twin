@@ -1,80 +1,60 @@
-# IT Support Digital Twin
+# 🤖 IT Support Digital Twin — Powered by ElevenLabs & AI
 
-A terminal-based, offline-first IT support agent with two interfaces:
+## Overview
 
-- **Text Mode** — type an issue in plain English, routed by keyword-based
-  intent detection to the right action.
-- **Voice Mode** — talk to "Alex," an ElevenLabs Conversational AI agent,
-  via the ElevenLabs web widget opened in your browser.
+A fully functional AI-powered IT Support agent named **Imran** that handles
+real IT support tasks via voice and text. Built with Python and ElevenLabs
+Conversational AI.
 
-Password resets, account unlocks, VPN/connectivity checks, disk cleanup,
-ticket creation, and guided troubleshooting all run locally against mock
-JSON data — no external APIs required except for Voice Mode.
+## ✅ Features
 
-## Setup
+- Voice mode powered by ElevenLabs (Imran - AI IT Support Agent)
+- Text mode for terminal-based interaction
+- Supervisor-debate trigger detection — recognizes impossible timelines,
+  repeated unresolved issues, security-bypass requests, and system-blame
+  language, and responds with an appropriate acknowledgment before continuing
+- Password reset workflow (mock AD/LDAP lookup, generates a temp password)
+- Account unlock and status check
+- VPN connectivity diagnostics — real `ping` to 8.8.8.8, DNS resolution,
+  scans network interfaces for VPN adapter names (tun, tap, vpn, cisco,
+  globalprotect, etc.)
+- Disk cleanup and temp file removal — scans temp directories, reports size,
+  deletes on confirmation, reports space reclaimed
+- IT ticket creation with auto-generated ticket IDs (`IT-YYYYMMDD-XXXX`)
+- Step-by-step guided troubleshooting — no internet, Outlook not opening,
+  slow computer, can't access shared drive
+- Full audit logging of all actions
+- Mock user directory with realistic data (10 users: active/locked/inactive/expired)
 
-```bash
-git clone https://github.com/emran-Automation-Techlead/it-support-digital-twin.git
-cd it-support-digital-twin
-pip install -r requirements.txt
-cp .env.example .env
-```
-
-Then open `.env` and add your ElevenLabs agent ID:
-
-```
-ELEVENLABS_AGENT_ID=your_elevenlabs_agent_id_here
-```
-
-`ELEVENLABS_API_KEY` is optional — the web widget only needs the agent ID.
-
-Run it:
-
-```bash
-python main.py
-```
-
-Requires Python 3.10+. Voice Mode opens a local HTML file in your default
-browser; the widget itself handles microphone/speaker access.
-
-## Startup menu
+## 🏗️ Architecture
 
 ```
-╔══════════════════════════════════╗
-║   IT Support Digital Twin        ║
-║   Powered by ElevenLabs          ║
-╚══════════════════════════════════╝
-
-[1] Text Mode
-[2] Voice Mode (Alex - ElevenLabs)
+user
+  -> main.py                (entry point, mode selector)
+       -> agent.py           (supervisor triggers + intent detection, Text Mode)
+            -> actions/*.py  (password, account, vpn, disk, tickets, troubleshoot)
+                 -> data_store.py (JSON read/write)
+                      -> data/*.json
+            -> logger.py     -> logs/it_support.log
+       -> voice/elevenlabs_agent.py (Voice Mode: opens ElevenLabs widget)
 ```
 
-If `ELEVENLABS_AGENT_ID` is missing from `.env`, Voice Mode prints a warning
-and exits back cleanly instead of crashing — it never fails silently or
-partially connects.
+## 🚀 Quick Start
 
-## Features
+1. `git clone https://github.com/emran-Automation-Techlead/it-support-digital-twin.git`
+2. `cd it-support-digital-twin`
+3. `pip install -r requirements.txt`
+4. `cp .env.example .env`
+5. Add your ElevenLabs API key and Agent ID to `.env`
+6. `python main.py`
+7. Choose Text Mode or Voice Mode
 
-- **Natural language intent detection** — keyword/pattern based, no LLM calls
-- **Password reset** — mock AD/LDAP lookup, generates a temp password
-- **Account status & unlock** — health summary plus locked-account clearing
-- **VPN / connectivity check** — real `ping` to 8.8.8.8, DNS resolution, scans
-  network interfaces for VPN adapter names (tun, tap, vpn, cisco, globalprotect, etc.)
-- **Disk cleanup** — scans temp directories (`%TEMP%`, `C:\Windows\Temp` on
-  Windows; `/tmp`, `~/.cache` on Linux/macOS), reports size, deletes on
-  confirmation, reports space reclaimed
-- **Ticket creation** — collects description/priority/category, generates an
-  `IT-YYYYMMDD-XXXX` ticket ID, saved to `data/tickets.json`
-- **Guided troubleshooting** — step-by-step flows for: can't connect to
-  internet, Outlook not opening, slow computer, can't access shared drive
-- **Voice Mode** — opens the ElevenLabs Conversational AI web widget in your
-  default browser for a full-duplex voice conversation with "Alex"
-
-## Project structure
+## 📁 Project Structure
 
 ```
 main.py                   entry point, mode selector
-agent.py                  intent detection + routing (text mode)
+agent.py                  supervisor triggers + intent detection/routing (text mode)
+supervisor.py             regex-based trigger detection for difficult conversational patterns
 ui.py                     rich UI helpers (panels, tables, spinners, colors)
 logger.py                 logging setup -> logs/it_support.log
 data_store.py             JSON read/write for users & tickets
@@ -83,12 +63,12 @@ voice/
   widget.html               ElevenLabs web widget template (placeholder agent-id)
   widget_rendered.html      generated at runtime with your real agent-id (gitignored)
 actions/
-  password.py
-  account.py               status check + unlock
-  vpn.py
-  disk.py
-  tickets.py
-  troubleshoot.py
+  password.py              password reset
+  account.py                status check + unlock
+  vpn.py                    connectivity diagnostics
+  disk.py                   temp file scan + cleanup
+  tickets.py                ticket creation
+  troubleshoot.py           guided troubleshooting flows
 data/
   users.json               10 mock users (active/locked/inactive/expired)
   tickets.json              ticket store (gitignored, generated locally)
@@ -97,16 +77,49 @@ logs/                       action log (gitignored)
 .env                         your real credentials, gitignored — never commit
 ```
 
-## Security notes
+## 🎙️ Voice Agent (Imran)
 
-- **Never commit `.env`.** It's excluded via `.gitignore` from the very
-  first commit. Only `.env.example` (empty placeholders) is tracked.
-- **No API key required for Voice Mode.** The web widget authenticates
-  with just the public agent ID, so there's no server-side secret to
-  protect for this feature.
-- All destructive actions (unlock account, reset password, delete temp
-  files) require an explicit `y/N` confirmation before executing.
-- Every state-changing action is logged to `logs/it_support.log`
-  (timestamp | action | username | outcome).
-- Unrecognized text input falls back to ticket creation with the original
-  text pre-filled as the description — nothing is silently dropped.
+- Powered by ElevenLabs Conversational AI
+- Handles: password resets, account unlocks, VPN checks,
+  disk cleanup, ticket creation, troubleshooting
+- Natural conversation flow with confirmation steps
+- Escalates to a senior technician after 2 failed attempts (configured in
+  Imran's ElevenLabs system prompt)
+
+## 🔒 Security
+
+- All credentials loaded from `.env` file
+- `.env` is gitignored — never committed, from the very first commit
+- No API key required for Voice Mode — the web widget authenticates with
+  just the public agent ID
+- Destructive actions (unlock account, reset password, delete temp files)
+  require explicit `y/N` confirmation before executing
+- Full audit trail in `logs/` (timestamp | action | username | outcome)
+
+## 🛠️ Tech Stack
+
+- Python 3.10+
+- ElevenLabs Conversational AI
+- rich (terminal UI)
+- psutil (system diagnostics)
+- python-dotenv
+
+## 📸 Screenshots
+
+[Screenshot of text mode]
+
+[Screenshot of voice mode]
+
+## 🎬 Demo Video
+
+[▶️ Watch the demo](assets/videos/imran-voice-agent-demo.mp4) — Imran handling
+IT support requests via voice.
+
+## 📊 Presentation
+
+[📑 Project overview deck](assets/IT_Support_Digital_Twin_Overview.pptx) —
+title, features, architecture, voice agent, tech stack, security, and demo.
+
+## 📄 License
+
+MIT

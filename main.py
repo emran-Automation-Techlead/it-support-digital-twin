@@ -14,7 +14,7 @@ def print_banner():
     ui.console.print(BANNER, style="bold cyan")
     ui.console.print()
     ui.console.print("[1] Text Mode")
-    ui.console.print("[2] Voice Mode (Alex - ElevenLabs)")
+    ui.console.print("[2] Voice Mode (Imran - ElevenLabs)")
     ui.console.print()
 
 

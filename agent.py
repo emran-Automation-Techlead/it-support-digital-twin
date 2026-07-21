@@ -3,6 +3,7 @@ from enum import Enum
 
 import ui
 from actions import account, disk, password, tickets, troubleshoot, vpn
+from supervisor import detect_trigger
 
 
 class Intent(Enum):
@@ -74,6 +75,10 @@ def _extract_username(text: str) -> str | None:
 
 class Agent:
     def handle(self, text: str):
+        response = detect_trigger(text)
+        if response:
+            ui.print_info(response)
+
         intent, topic = detect_intent(text)
 
         if intent == Intent.PASSWORD_RESET:
