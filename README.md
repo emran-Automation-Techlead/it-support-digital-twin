@@ -11,8 +11,9 @@ Conversational AI.
 - Voice mode powered by ElevenLabs (Imran - AI IT Support Agent)
 - Text mode for terminal-based interaction
 - Supervisor-debate trigger detection — recognizes impossible timelines,
-  repeated unresolved issues, security-bypass requests, and system-blame
-  language, and responds with an appropriate acknowledgment before continuing
+  repeated unresolved issues, security-bypass requests, system-blame
+  language, and users abandoning the conversation, and responds with an
+  appropriate acknowledgment before continuing
 - Password reset workflow (mock AD/LDAP lookup, generates a temp password)
 - Account unlock and status check
 - VPN connectivity diagnostics — real `ping` to 8.8.8.8, DNS resolution,

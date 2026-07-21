@@ -16,6 +16,10 @@ SUPERVISOR_DEBATE_TRIGGERS = {
     "system_blame": {
         "detect": r"(?i)(system is broken|system sucks|your system|IT department is useless)",
         "response_template": "I hear the frustration. Let me diagnose if this is a system issue or configuration issue. [Diagnostic questions]."
+    },
+    "abandoned_user": {
+        "detect": r"(?i)(never mind|forget it|i'll deal with it myself|this isn't working|i give up|i'm done|not worth it)",
+        "response_template": "Before you go — let me escalate this to a senior technician so it doesn't fall through the cracks. [Escalation handoff]."
     }
 }
 
