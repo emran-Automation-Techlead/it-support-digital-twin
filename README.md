@@ -113,7 +113,9 @@ logs/                       action log (gitignored)
 
 ## 🎬 Demo Video
 
-[▶️ Watch the demo](assets/videos/imran-voice-agent-demo.mp4) — Imran handling
+![Imran voice agent demo](assets/demo.gif)
+
+[▶️ Watch the full demo](assets/videos/imran-voice-agent-demo.mp4) — Imran handling
 IT support requests via voice.
 
 ## 📊 Presentation
